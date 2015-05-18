@@ -37,6 +37,7 @@ public class MyServer{
 
 	private class SocketThread extends Thread{
 		
+		Thread receiver;
 		Socket s;
 		MyConnection conn;
 		boolean flag;
@@ -46,6 +47,8 @@ public class MyServer{
 				this.s = ssocket.accept();
 				this.conn = new MyConnection(this.s);
 				this.flag = false;
+				this.receiver = new Thread(new ServerReceiver(this));
+				this.receiver.start();				
 				this.conn.sendMessage("Server: " + "you have been connected.");
 			}catch(Exception e){
 				System.out.println("Server: An error occurred.");
@@ -62,6 +65,28 @@ public class MyServer{
 				System.out.println("Server: An error occurred.");
 				e.printStackTrace();
 			}		
+		}
+
+			private class ServerReceiver implements Runnable{
+
+			SocketThread sg;
+
+			public ServerReceiver(SocketThread sg){
+				this.sg = sg;
+			}
+
+			public void run(){
+				while(!flag){
+					String message = conn.getMessage();
+					System.out.println(message);
+					
+					if(message.equals("/quit")){
+						System.out.println("Server: Clien has disconnected.");
+						flag = true;
+					}
+					
+				}
+			}
 		}
 	}
 }
