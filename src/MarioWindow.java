@@ -25,6 +25,7 @@ import java.net.*;
 
 public class MarioWindow extends JFrame implements KeyListener {
 	Vector<GameObject> gameobjects = new Vector<GameObject>();
+
 	public static int WIDTH = 800;
 	public static int HEIGHT = 600;
 	public static final int REFRESH_RATE = 20;
@@ -45,7 +46,10 @@ public class MarioWindow extends JFrame implements KeyListener {
 		
 		this.c = c;
 
-		this.setTitle("Game Window");
+		ImageIcon img = new ImageIcon("CS145MP2/assets/img/logo.png");
+		this.setIconImage(img.getImage());
+
+		this.setTitle("Game of Turons");
 		this.setLocation(100,100);
 		this.setIgnoreRepaint(true);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
