@@ -20,11 +20,19 @@ public class MyServer{
 			System.out.println("Server: Waiting for connections. . .");
 
 			while(true){
-				SocketThread sg = new SocketThread();
-				this.clients.add(sg);
-				sg.start();
+				SocketThread sg = new SocketThread(this, ssocket);
+				if(this.clients.size() < 4){
+					sg.conn.sendMessage("Server: You have been connected.");
+					this.clients.add(sg);
+					sg.start();
+				}
+				else{
+					sg.conn.sendMessage("/full");
+					sg.flag = true;
+					sg = null;
+				}
 			}
-		
+
 		}catch(Exception e){
 			System.out.println("Server: An error occurred.");
 			e.printStackTrace();
@@ -33,60 +41,5 @@ public class MyServer{
 	
 	public static void main(String args[]){
 		new MyServer();
-	}
-
-	private class SocketThread extends Thread{
-		
-		Thread receiver;
-		Socket s;
-		MyConnection conn;
-		boolean flag;
-
-		public SocketThread(){
-			try{
-				this.s = ssocket.accept();
-				this.conn = new MyConnection(this.s);
-				this.flag = false;
-				this.receiver = new Thread(new ServerReceiver(this));
-				this.receiver.start();				
-				this.conn.sendMessage("Server: " + "you have been connected.");
-			}catch(Exception e){
-				System.out.println("Server: An error occurred.");
-				e.printStackTrace();
-			}
-		}
-		
-		public void run(){
-			try{
-				while(true){
-				
-				}
-			}catch(Exception e){
-				System.out.println("Server: An error occurred.");
-				e.printStackTrace();
-			}		
-		}
-
-			private class ServerReceiver implements Runnable{
-
-			SocketThread sg;
-
-			public ServerReceiver(SocketThread sg){
-				this.sg = sg;
-			}
-
-			public void run(){
-				while(!flag){
-					String message = conn.getMessage();
-					System.out.println(message);
-					
-					if(message.equals("/quit")){
-						System.out.println("Server: Clien has disconnected.");
-						flag = true;
-					}
-					
-				}
-			}
-		}
 	}
 }
