@@ -29,10 +29,7 @@ public class MarioWindow extends JFrame implements KeyListener {
 	public static int HEIGHT = 600;
 	public static final int REFRESH_RATE = 20;
 	
-	Thread receiver;
-	boolean flag;
-	Socket s;
-	MyConnection conn;	
+	MyClient c;
 
 	boolean fpsFlag = true;
 	
@@ -44,34 +41,22 @@ public class MarioWindow extends JFrame implements KeyListener {
 	
 	BufferedImage bi;
 
-	public MarioWindow(){
+	public MarioWindow(MyClient c){
 		
-		this.setTitle("MarioWindow!");
+		this.c = c;
+
+		this.setTitle("Game Window");
 		this.setLocation(100,100);
 		this.setIgnoreRepaint(true);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e){
-				conn.sendMessage("/quit");
-				flag = true;
+				c.conn.sendMessage("/quit");
+				c.flag = true;
 				System.exit(1);
 			}
 		});		
 		this.addKeyListener(this);
-
-		/** CONNECTION INITIALIZATOIN **/
-		try{
-			this.flag = false;
-			this.s = new Socket("127.0.0.1", 8888);
-			this.conn = new MyConnection(s);
-			this.receiver = new Thread(new ClientReceiver());
-			this.receiver.start();
-			this.conn.sendMessage("I am connected!");			
-		}catch(Exception e){
-			System.out.println("Client: An error occurred.");
-			e.printStackTrace();
-		}	
-		/** END **/
 		
 		canvas = new Canvas();
 		canvas.setIgnoreRepaint(true);
@@ -209,22 +194,5 @@ public class MarioWindow extends JFrame implements KeyListener {
 			System.out.println("Unable to read file!");
 			return null;
 		}	
-	}
-
-	/** Thread for Receiving Messages **/
-	private class ClientReceiver implements Runnable{
-
-		public void run(){
-			while(!flag){
-				String message = conn.getMessage();
-				System.out.println(message);
-			}
-		}
-	}
-	/** END **/
-	
-	public static void main(String args[]){
-		MarioWindow w1 = new MarioWindow();
-		w1.startGame();
 	}
 }

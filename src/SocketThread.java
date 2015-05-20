@@ -32,7 +32,7 @@ public class SocketThread extends Thread{
 	public void run(){
 		try{
 			while(!this.flag){
-
+				// Do Nothing. Just let the thread die.
 			}
 			System.out.println("Killed");
 		}catch(Exception e){

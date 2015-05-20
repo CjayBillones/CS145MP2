@@ -19,9 +19,6 @@ public class MyClient extends JFrame{
 	Thread receiver;
 	boolean flag;
 
-	/** GUI VARIABLES **/
-	Canvas canvas;
-
 	public MyClient(){
 
 		/** Connection Initialization **/
@@ -35,31 +32,11 @@ public class MyClient extends JFrame{
 			System.out.println("Client: An error occurred.");
 			e.printStackTrace();
 		}
-
-		this.setTitle("Game Window");
-		this.setLocation(100, 100);
-		this.setIgnoreRepaint(true);
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e){
-				conn.sendMessage("/quit");
-				flag = true;
-				System.exit(1);
-			}
-		});
-
-		canvas = new Canvas();
-		canvas.setIgnoreRepaint(true);
-		canvas.setSize(640,480);
-
-		this.add(canvas);
-		this.pack();
-		this.setVisible(true);				
-
 	}
 
 	public static void main(String args[]){
 		MyClient c = new MyClient();
+		MarioWindow w = new MarioWindow(c);
 	}
 
 	private class ClientReceiver implements Runnable{
