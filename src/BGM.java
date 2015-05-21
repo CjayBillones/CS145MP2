@@ -32,12 +32,12 @@ public class BGM {
 			File soundFile = new File(fileDir);
 			AudioInputStream sound = AudioSystem.getAudioInputStream(soundFile);
 			DataLine.Info info = new DataLine.Info(Clip.class, sound.getFormat());
-	    		clip = (Clip) AudioSystem.getLine(info);
-	    		clip.open(sound);
-	    		clip.loop(clip.LOOP_CONTINUOUSLY);
-    		} catch (Exception e) {
-    			System.out.println("Some exception: " + e);
-    		}
+	    	clip = (Clip) AudioSystem.getLine(info);
+	    	clip.open(sound);
+	    	clip.loop(clip.LOOP_CONTINUOUSLY);
+    	} catch (Exception e) {
+    		System.out.println("Some exception: " + e);
+    	}
 	}
 
 }        
