@@ -10,7 +10,6 @@
 	v.1.1 - Just a basic hack
 	v.1.2 - Learned double buffering! http://www.gamedev.net/page/resources/_/reference/programming/languages/java/java-games-active-rendering-r2418
 */
-
 package CS145MP2.src;
 
 import java.awt.*;
@@ -21,7 +20,6 @@ import javax.swing.*;
 import java.util.*;
 import javax.imageio.*;
 import java.io.*;
-import java.net.*;
 
 public class MarioWindow extends JFrame implements KeyListener {
 
@@ -30,23 +28,21 @@ public class MarioWindow extends JFrame implements KeyListener {
 	Vector<GameObject> gameobjects = new Vector<GameObject>();
 
 	Toolkit kit = Toolkit.getDefaultToolkit();
-     Dimension screenSize = kit.getScreenSize();
+	Dimension screenSize = kit.getScreenSize();
 
 	final int FRAME_WIDTH = 1024;
-     final int FRAME_HEIGHT = 600;
-     final int X_POSITION = (screenSize.width - FRAME_WIDTH)/2;
+	final int FRAME_HEIGHT = 600;
+	final int X_POSITION = (screenSize.width - FRAME_WIDTH)/2;
 	final int Y_POSITION = (screenSize.height - FRAME_HEIGHT - 50)/2;
 	public static final int REFRESH_RATE = 20;
 	
-	MyClient c;
-
 	boolean fpsFlag = true;
 	
 	Canvas canvas;
 	BufferStrategy buffer;
 	GraphicsEnvironment ge;
 	GraphicsDevice gd;
-	GraphicsConfiguration gc; 
+	GraphicsConfiguration gc;
 	
 	BufferedImage bi;
 
@@ -54,11 +50,12 @@ public class MarioWindow extends JFrame implements KeyListener {
 		
 		this.c = c;
 
-		ImageIcon img = new ImageIcon(assetsPath + "logo.png");
-		this.setIconImage(img.getImage());
+
+  	ImageIcon img = new ImageIcon("assets/images/logo.png");
+  	this.setIconImage(img.getImage());
 
 		this.setTitle("Sum Title"); // ------------------ CHANGE THIS ---------------------- 
-        	this.setLocation(X_POSITION,Y_POSITION);
+    this.setLocation(X_POSITION,Y_POSITION);
 		this.setIgnoreRepaint(true);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter(){
@@ -89,7 +86,7 @@ public class MarioWindow extends JFrame implements KeyListener {
 		
 		// creating the back buffer
 		bi = gc.createCompatibleImage(FRAME_WIDTH,FRAME_HEIGHT);
-		}
+    }
 	
 	public void showFPS(boolean fpsFlag) {
 		this.fpsFlag = fpsFlag;
@@ -158,45 +155,46 @@ public class MarioWindow extends JFrame implements KeyListener {
 		}
 	}
 
-	public void add(GameObject go) {
-			gameobjects.add(go);
-	}	
+    public void add(GameObject go) {
+        gameobjects.add(go);
+    }	
 	
-	public void keyTyped(KeyEvent e) {
-			
-	}
 
-	public void keyPressed(KeyEvent e) {
-			String key = KeyEvent.getKeyText(e.getKeyCode());
-			for (GameObject go : gameobjects) {
-					go.keyPressed(key);
-			}
-	}
+    public void keyTyped(KeyEvent e) {
+        
+    }
 
-	public void keyReleased(KeyEvent e) {
-			String key = KeyEvent.getKeyText(e.getKeyCode());
-			for (GameObject go : gameobjects) {
-					go.keyReleased(key);
-			}
-	}
+    public void keyPressed(KeyEvent e) {
+        String key = KeyEvent.getKeyText(e.getKeyCode());
+        for (GameObject go : gameobjects) {
+            go.keyPressed(key);
+        }
+    }
 
-	public void startGame() {
+    public void keyReleased(KeyEvent e) {
+        String key = KeyEvent.getKeyText(e.getKeyCode());
+        for (GameObject go : gameobjects) {
+            go.keyReleased(key);
+        }
+    }
+
+    public void startGame() {
         //System.out.println("MarioWindow: Starting all game objects...");
         System.out.println("You have chosen to play \"Sum Title Here\"");  // ------------------ CHANGE THIS ---------------------- 
-			for (GameObject go : gameobjects) {
-		Thread t = new Thread(go);
-					t.start();
-			}
+        for (GameObject go : gameobjects) {
+			Thread t = new Thread(go);
+            t.start();
+        }
         //System.out.println("MarioWindow: Starting game...");
         System.out.println("Good luck, player."); // ------------------ CHANGE THIS ----------------------      
-		this.draw();
-	}
+        this.draw();
+    }
 	
 	public static void delay(int milliseconds) {
-		try {
-			Thread.sleep(milliseconds);
-		} catch (Exception e) { }
-	}
+        try {
+            Thread.sleep(milliseconds);
+        } catch (Exception e) { }
+    }
 	
 	public static BufferedImage getImage(String filename) {
 		try {
@@ -208,4 +206,15 @@ public class MarioWindow extends JFrame implements KeyListener {
 			return null;
 		}	
 	}
+	
+//	public static void main(String args[]) {
+//		MarioWindow2 w1 = new MarioWindow2();
+//		for (int i = 0; i < 50; i++) {
+//			MyGameObject2 g2 = new MyGameObject2();			
+//			w1.add(g2);
+//		}
+//		w1.startGame();
+//		
+//	}
 }
+
