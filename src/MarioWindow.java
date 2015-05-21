@@ -24,10 +24,16 @@ import java.io.*;
 import java.net.*;
 
 public class MarioWindow extends JFrame implements KeyListener {
+
 	Vector<GameObject> gameobjects = new Vector<GameObject>();
 
-	public static int WIDTH = 800;
-	public static int HEIGHT = 600;
+	Toolkit kit = Toolkit.getDefaultToolkit();
+    Dimension screenSize = kit.getScreenSize();
+
+	final int FRAME_WIDTH = 1024;
+    final int FRAME_HEIGHT = 600;
+    final int X_POSITION = (screenSize.width - FRAME_WIDTH)/2;
+	final int Y_POSITION = (screenSize.height - FRAME_HEIGHT - 50)/2;
 	public static final int REFRESH_RATE = 20;
 	
 	MyClient c;
@@ -49,8 +55,8 @@ public class MarioWindow extends JFrame implements KeyListener {
 		ImageIcon img = new ImageIcon("CS145MP2/assets/img/logo.png");
 		this.setIconImage(img.getImage());
 
-		this.setTitle("Game of Turons");
-		this.setLocation(100,100);
+		this.setTitle("Sum Title"); // ------------------ CHANGE THIS ---------------------- 
+        this.setLocation(X_POSITION,Y_POSITION);
 		this.setIgnoreRepaint(true);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter(){
@@ -64,7 +70,7 @@ public class MarioWindow extends JFrame implements KeyListener {
 		
 		canvas = new Canvas();
 		canvas.setIgnoreRepaint(true);
-		canvas.setSize(640,480);
+		canvas.setSize(FRAME_WIDTH,FRAME_HEIGHT);
 		
 		this.add(canvas);
 		this.pack();
@@ -80,7 +86,7 @@ public class MarioWindow extends JFrame implements KeyListener {
 		gc = gd.getDefaultConfiguration();
 		
 		// creating the back buffer
-		bi = gc.createCompatibleImage(640,480);
+		bi = gc.createCompatibleImage(FRAME_WIDTH,FRAME_HEIGHT);
 		}
 	
 	public void showFPS(boolean fpsFlag) {
@@ -117,12 +123,12 @@ public class MarioWindow extends JFrame implements KeyListener {
 				// clear back buffer
 				g2d = bi.createGraphics();
 				g2d.setColor(background);
-				g2d.fillRect(0,0,640,480);
+				g2d.fillRect(0,0,FRAME_WIDTH,FRAME_HEIGHT);
 				
 				// display frames per second...
 				if (fpsFlag) {
 					g2d.setFont( new Font( "Courier New", Font.PLAIN, 12 ) );
-					g2d.setColor( Color.GREEN );
+					g2d.setColor( Color.PINK );
 					g2d.drawString( String.format( "FPS: %s", fps ), 20, 20 );
 				}
 				
@@ -173,20 +179,22 @@ public class MarioWindow extends JFrame implements KeyListener {
 	}
 
 	public void startGame() {
-			System.out.println("MarioWindow: Starting all game objects...");
+        //System.out.println("MarioWindow: Starting all game objects...");
+        System.out.println("You have chosen to play \"Sum Title Here\"");  // ------------------ CHANGE THIS ---------------------- 
 			for (GameObject go : gameobjects) {
 		Thread t = new Thread(go);
 					t.start();
 			}
-			System.out.println("MarioWindow: Starting game...");        
-			this.draw();
+        //System.out.println("MarioWindow: Starting game...");
+        System.out.println("Good luck, player."); // ------------------ CHANGE THIS ----------------------      
+		this.draw();
 	}
 	
 	public static void delay(int milliseconds) {
-				try {
-						Thread.sleep(milliseconds);
-				} catch (Exception e) { }
-		}
+		try {
+			Thread.sleep(milliseconds);
+		} catch (Exception e) { }
+	}
 	
 	public static BufferedImage getImage(String filename) {
 		try {
@@ -194,8 +202,7 @@ public class MarioWindow extends JFrame implements KeyListener {
 			BufferedImage img = ImageIO.read(fp);			
 			return img;
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Unable to read file!");
+			System.out.println("Unable to read file " + filename + "!");
 			return null;
 		}	
 	}
