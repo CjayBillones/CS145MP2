@@ -6,7 +6,7 @@ import java.awt.image.*;
 
 public class GameInterface extends GameObject {
 
-	final String assetsPath = "CS145MP2\\assets\\";
+	final String assetsPath = "CS145MP2/assets/";
 
 	final int TITLE = 0;
 	final int MENU = 1;
@@ -40,10 +40,10 @@ public class GameInterface extends GameObject {
 	ArrayList<BufferedImage> screenNotif = new ArrayList<BufferedImage>();
 
 	public GameInterface() {
-		screenIMG = MarioWindow.getImage(assetsPath + "misc\\title.png");
-		menuIMG = MarioWindow.getImage(assetsPath + "1 - menu\\menu.png");
-		playerIdIMG = MarioWindow.getImage(assetsPath + "1 - menu\\p" + playerId + ".png");
-		playersNumIMG = MarioWindow.getImage(assetsPath + "1 - menu\\" + numOfPlayers + "players.png");
+		screenIMG = MarioWindow.getImage(assetsPath + "misc/title.png");
+		menuIMG = MarioWindow.getImage(assetsPath + "1 - menu/menu.png");
+		playerIdIMG = MarioWindow.getImage(assetsPath + "1 - menu/p" + playerId + ".png");
+		playersNumIMG = MarioWindow.getImage(assetsPath + "1 - menu/" + numOfPlayers + "players.png");
 
 		playerSelect.add("arryn");
 		playerSelect.add("baratheon");
@@ -54,15 +54,15 @@ public class GameInterface extends GameObject {
 		playerSelect.add("tyrell");
 
 		for (int i = 0; i<playerSelect.size(); i++) {
-			playerSelectImage.add(MarioWindow.getImage(assetsPath + "1 - menu\\descrpt-" + playerSelect.get(i) + ".png"));
+			playerSelectImage.add(MarioWindow.getImage(assetsPath + "1 - menu/descrpt-" + playerSelect.get(i) + ".png"));
 		}
 
 		houseSelected = playerSelectImage.get(houseNumSelected);
 
-		screenNotif.add(MarioWindow.getImage(assetsPath + "1 - menu\\choose-house-yes.png")); // 0
-		screenNotif.add(MarioWindow.getImage(assetsPath + "1 - menu\\choose-house-no.png")); // 1
-		screenNotif.add(MarioWindow.getImage(assetsPath + "1 - menu\\house-chosen.png")); // 2
-		screenNotif.add(MarioWindow.getImage(assetsPath + "1 - menu\\same-house.png")); // 3
+		screenNotif.add(MarioWindow.getImage(assetsPath + "1 - menu/choose-house-yes.png")); // 0
+		screenNotif.add(MarioWindow.getImage(assetsPath + "1 - menu/choose-house-no.png")); // 1
+		screenNotif.add(MarioWindow.getImage(assetsPath + "1 - menu/house-chosen.png")); // 2
+		screenNotif.add(MarioWindow.getImage(assetsPath + "1 - menu/same-house.png")); // 3
 	}
 
 	public void paint(Graphics2D g) {
@@ -114,7 +114,7 @@ public class GameInterface extends GameObject {
      				playersNumIMG = null;
      				playerIdIMG = null;
      				screenNotifIMG = null;
-     				screenIMG = MarioWindow.getImage(assetsPath + "2 - loading\\loading-" + playerSelect.get(houseNumSelected) + ".png");
+     				screenIMG = MarioWindow.getImage(assetsPath + "2 - loading/loading-" + playerSelect.get(houseNumSelected) + ".png");
 
      			}
      			else {
@@ -157,7 +157,7 @@ public class GameInterface extends GameObject {
 
 	// --------------------------------------- [ MAIN FUNCTION ] --------------------------------------- //
 
-	
+	/*
 	public static void main(String args[]) {
 		
           //MyClient c = new MyClient("127.0.0.1", 8888);
@@ -168,7 +168,7 @@ public class GameInterface extends GameObject {
 		window.add(test.bgm);
 		window.startGame();
 
-	}
+	}*/
 	
 
 }

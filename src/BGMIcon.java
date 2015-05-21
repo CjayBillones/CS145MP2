@@ -7,7 +7,7 @@ import java.applet.*;
 
 public class BGMIcon extends GameObject {
 
-    final String assetsPath = "CS145MP2\\assets\\";
+    final String assetsPath = "CS145MP2/assets/";
 
     final int x = 990;
     final int y = 10;
@@ -23,10 +23,10 @@ public class BGMIcon extends GameObject {
     BGM bgm;
 
     public BGMIcon() {
-        song = "Music Files\\wav\\GoT_menu.wav";
+        song = "Music Files/wav/GoT_menu.wav";
         bgm = new BGM(song);
-        bgmOn = MarioWindow.getImage(assetsPath + "misc\\sound-on.png");
-        bgmOff = MarioWindow.getImage(assetsPath + "misc\\sound-off.png");
+        bgmOn = MarioWindow.getImage(assetsPath + "misc/sound-on.png");
+        bgmOff = MarioWindow.getImage(assetsPath + "misc/sound-off.png");
         img = bgmOn;
     }
 

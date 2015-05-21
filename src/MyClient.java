@@ -18,7 +18,7 @@ public class MyClient {
 																									"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 																									"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 	
-	public static int WIDTH = 800;
+	public static int WIDTH = 1024;
 	public static int HEIGHT = 600;
 
 	/** Connection Variables **/
@@ -41,11 +41,11 @@ public class MyClient {
 			e.printStackTrace();
 		}
 	}
-	/*
+	
 	public static void main(String args[]){
 		try{
-			String ip = JOptionPane.showInputDialog("Enter IP Address: ", "127.0.0.1");
-			int port = Integer.parseInt(JOptionPane.showInputDialog("Enter Port Number: ", "8888"));
+			//String ip = JOptionPane.showInputDialog("Enter IP Address: ", "127.0.0.1");
+			//int port = Integer.parseInt(JOptionPane.showInputDialog("Enter Port Number: ", "8888"));
 			
 			//if(validateIP(ip)){
 				//MyClient c = new MyClient(ip, port);
@@ -61,7 +61,7 @@ public class MyClient {
 			e.printStackTrace();
 		}
 	}
-	*/
+	
 
 	public static boolean validateIP(String ip){
 		Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);
@@ -72,16 +72,21 @@ public class MyClient {
 
 		public void run(){
 			while(!flag){
-				String message = conn.getMessage();
-				System.out.println(message);
+				try{
+					String message = conn.getMessage();
+					System.out.println(message);
 
-				if(message.charAt(0) == '/'){
-					if(message.equals("/full")){
-						System.out.println("Server: Server is full.");
-						flag = true;
-						System.exit(1);
-					}
+					if(message.charAt(0) == '/'){
+						if(message.equals("/full")){
+							System.out.println("Server: Server is full.");
+							flag = true;
+							System.exit(1);
+						}
+					}					
+				}catch(Exception e){
+					e.printStackTrace();
 				}
+
 			}
 		}
 	}

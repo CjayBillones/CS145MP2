@@ -13,6 +13,7 @@ public class SocketThread extends Thread{
 	MyConnection conn;
 	Thread receiver;
 	boolean flag;
+	String name;
 
 	public SocketThread(MyServer server, ServerSocket ssocket){
 		try{
@@ -57,7 +58,8 @@ public class SocketThread extends Thread{
 
 				if(message.charAt(0) == '/'){
 					if(message.equals("/quit")){
-						System.out.println("Server: Client" + server.clients.indexOf(this.sg) + " left.");
+						System.out.println("Server: " + sg.name + " left.");
+						server.broadcast("client", "Server: " + sg.name + " has left.", sg, false);
 						this.sg.flag = true;
 						server.clients.remove(this.sg);
 					}

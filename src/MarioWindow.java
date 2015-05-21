@@ -25,7 +25,7 @@ import java.net.*;
 
 public class MarioWindow extends JFrame implements KeyListener {
 
-	final String assetsPath = "assets\\img\\";
+	final String assetsPath = "assets/img/";
 
 	Vector<GameObject> gameobjects = new Vector<GameObject>();
 
@@ -50,9 +50,9 @@ public class MarioWindow extends JFrame implements KeyListener {
 	
 	BufferedImage bi;
 
-	public MarioWindow(){
+	public MarioWindow(MyClient c){
 		
-		//this.c = c;
+		this.c = c;
 
 		ImageIcon img = new ImageIcon(assetsPath + "logo.png");
 		this.setIconImage(img.getImage());
@@ -63,8 +63,8 @@ public class MarioWindow extends JFrame implements KeyListener {
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e){
-				//c.conn.sendMessage("/quit");
-				//c.flag = true;
+				c.conn.sendMessage("/quit");
+				c.flag = true;
 				System.exit(1);
 			}
 		});		
