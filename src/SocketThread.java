@@ -4,6 +4,19 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/** Server Protocols (To Be Sent To Client) **/
+/**
+* 
+*	/name <player_name>
+* /house <house_name>
+*	/castle_hp <remaining_hp>
+* /gold <amount_of_gold>
+*	/offense <number_of_offense_soldiers>
+* /defense <number_of_defense_soldiers>
+* /brothel <number_of_brothels>
+*
+**/
+
 public class SocketThread extends Thread{
 
 	MyServer server;
@@ -15,12 +28,15 @@ public class SocketThread extends Thread{
 	boolean flag;
 	String name;
 
+	Player p;
+
 	public SocketThread(MyServer server, ServerSocket ssocket){
 		try{
 			this.flag = false;
 			this.server = server;
 			this.ssocket = ssocket;
 			this.s = ssocket.accept();
+			this.p = new Player();
 			this.conn = new MyConnection(this.s);
 			this.receiver = new Thread(new ServerReceiver(this));
 			this.receiver.start();
@@ -59,7 +75,7 @@ public class SocketThread extends Thread{
 				if(message.charAt(0) == '/'){
 					if(message.equals("/quit")){
 						System.out.println("Server: " + sg.name + " left.");
-						server.broadcast("client", "Server: " + sg.name + " has left.", sg, false);
+						server.broadcastMessage("client", "Server: " + sg.name + " has left.", sg, false);
 						this.sg.flag = true;
 						server.clients.remove(this.sg);
 					}
