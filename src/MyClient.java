@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MyClient extends JFrame{
+public class MyClient {
 
 	private static final String IPADDRESS_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 																									"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -41,7 +41,7 @@ public class MyClient extends JFrame{
 			e.printStackTrace();
 		}
 	}
-
+	/*
 	public static void main(String args[]){
 		try{
 			String ip = JOptionPane.showInputDialog("Enter IP Address: ", "127.0.0.1");
@@ -61,6 +61,7 @@ public class MyClient extends JFrame{
 			e.printStackTrace();
 		}
 	}
+	*/
 
 	public static boolean validateIP(String ip){
 		Pattern pattern = Pattern.compile(IPADDRESS_PATTERN);

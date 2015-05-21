@@ -25,14 +25,16 @@ import java.net.*;
 
 public class MarioWindow extends JFrame implements KeyListener {
 
+	final String assetsPath = "assets\\img\\";
+
 	Vector<GameObject> gameobjects = new Vector<GameObject>();
 
 	Toolkit kit = Toolkit.getDefaultToolkit();
-    Dimension screenSize = kit.getScreenSize();
+     Dimension screenSize = kit.getScreenSize();
 
 	final int FRAME_WIDTH = 1024;
-    final int FRAME_HEIGHT = 600;
-    final int X_POSITION = (screenSize.width - FRAME_WIDTH)/2;
+     final int FRAME_HEIGHT = 600;
+     final int X_POSITION = (screenSize.width - FRAME_WIDTH)/2;
 	final int Y_POSITION = (screenSize.height - FRAME_HEIGHT - 50)/2;
 	public static final int REFRESH_RATE = 20;
 	
@@ -48,21 +50,21 @@ public class MarioWindow extends JFrame implements KeyListener {
 	
 	BufferedImage bi;
 
-	public MarioWindow(MyClient c){
+	public MarioWindow(){
 		
-		this.c = c;
+		//this.c = c;
 
-		ImageIcon img = new ImageIcon("CS145MP2/assets/img/logo.png");
+		ImageIcon img = new ImageIcon(assetsPath + "logo.png");
 		this.setIconImage(img.getImage());
 
 		this.setTitle("Sum Title"); // ------------------ CHANGE THIS ---------------------- 
-        this.setLocation(X_POSITION,Y_POSITION);
+        	this.setLocation(X_POSITION,Y_POSITION);
 		this.setIgnoreRepaint(true);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e){
-				c.conn.sendMessage("/quit");
-				c.flag = true;
+				//c.conn.sendMessage("/quit");
+				//c.flag = true;
 				System.exit(1);
 			}
 		});		
