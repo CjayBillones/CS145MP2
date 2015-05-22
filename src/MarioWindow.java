@@ -27,6 +27,8 @@ public class MarioWindow extends JFrame implements KeyListener {
 
 	Vector<GameObject> gameobjects = new Vector<GameObject>();
 
+	MyClient c;
+
 	Toolkit kit = Toolkit.getDefaultToolkit();
 	Dimension screenSize = kit.getScreenSize();
 
@@ -49,7 +51,6 @@ public class MarioWindow extends JFrame implements KeyListener {
 	public MarioWindow(MyClient c){
 		
 		this.c = c;
-
 
   	ImageIcon img = new ImageIcon("assets/images/logo.png");
   	this.setIconImage(img.getImage());

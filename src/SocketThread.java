@@ -36,8 +36,8 @@ public class SocketThread extends Thread{
 			this.server = server;
 			this.ssocket = ssocket;
 			this.s = ssocket.accept();
-			this.p = new Player();
 			this.conn = new MyConnection(this.s);
+			this.p = new Player(this);
 			this.receiver = new Thread(new ServerReceiver(this));
 			this.receiver.start();
 		}catch(Exception e){
@@ -76,6 +76,7 @@ public class SocketThread extends Thread{
 					if(message.equals("/quit")){
 						System.out.println("Server: " + sg.name + " left.");
 						server.broadcastMessage("client", "Server: " + sg.name + " has left.", sg, false);
+						sg.p.killBrothelThreads();
 						this.sg.flag = true;
 						server.clients.remove(this.sg);
 					}
