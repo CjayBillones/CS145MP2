@@ -69,6 +69,8 @@ public class SocketThread extends Thread{
 		public void run(){
 			while(!sg.flag){
 				String message = conn.getMessage();
+				String split[] = message.split(" ");
+				System.out.println(message);
 
 				if(message.length() == 0) continue;
 
@@ -79,6 +81,15 @@ public class SocketThread extends Thread{
 						sg.p.killBrothelThreads();
 						this.sg.flag = true;
 						server.clients.remove(this.sg);
+					}
+					else if(message.equals("/start_game")){
+						System.out.println("Start Game");
+						sg.p.initializeBrothels();
+						sg.p.initializeWhiteWalkerGenerator();
+					}
+					else if(split[0].equals("/house")){
+						System.out.println("House");
+						this.sg.p.assignHouse(split[1]);
 					}
 				}
 			}

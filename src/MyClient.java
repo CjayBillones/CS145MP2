@@ -27,6 +27,8 @@ public class MyClient {
 	Thread receiver;
 	boolean flag;
 
+	GameInterface test;
+
 	public MyClient(String ip, int port){
 
 		/** Connection Initialization **/
@@ -34,8 +36,8 @@ public class MyClient {
 			this.flag = false;
 			this.s = new Socket(ip, port);
 			this.conn = new MyConnection(s);
-			this.receiver = new Thread(new ClientReceiver());
-			this.receiver.start();
+			this.receiver = new Thread(new ClientReceiver(this));
+			//this.receiver.start();
 		}catch(Exception e){
 			System.out.println("Client: An error occurred.");
 			e.printStackTrace();
@@ -50,7 +52,19 @@ public class MyClient {
 			//if(validateIP(ip)){
 				//MyClient c = new MyClient(ip, port);
 				MyClient c = new MyClient("127.0.0.1", 8888);
-				MarioWindow w = new MarioWindow(c);
+				MarioWindow window = new MarioWindow(c);
+				GameInterface test = new GameInterface(c);
+				c.test = test;
+				c.receiver.start();
+				window.add(test);
+				window.add(test.bgm);
+        window.add(test.health);
+        window.add(test.money);
+        window.add(test.defenders);
+        window.add(test.warriors);
+        window.add(test.brothels);
+				window.startGame();
+				
 			//}
 			//else{
 				//System.out.println("Client: Invalid IP Address");
@@ -70,10 +84,17 @@ public class MyClient {
 
 	private class ClientReceiver implements Runnable{
 
+		MyClient c;
+
+		public ClientReceiver(MyClient c){
+			this.c = c;
+		}
+
 		public void run(){
 			while(!flag){
 				try{
 					String message = conn.getMessage();
+					String split[] = message.split(" ");
 					System.out.println(message);
 
 					if(message.charAt(0) == '/'){
@@ -81,6 +102,26 @@ public class MyClient {
 							System.out.println("Server: Server is full.");
 							flag = true;
 							System.exit(1);
+						}
+						else if(split[0].equals("/health")){
+							System.out.println("Health");
+							c.test.health.set(Integer.parseInt(split[1]));
+						}
+						else if(split[0].equals("/gold")){
+							System.out.println("Gold");
+							c.test.money.set(Integer.parseInt(split[1]));
+						}
+						else if(split[0].equals("/defender")){
+							System.out.println("Defender");
+							c.test.defenders.set(Integer.parseInt(split[1]));
+						}
+						else if(split[0].equals("/warrior")){
+							System.out.println("Warrior");
+							c.test.warriors.set(Integer.parseInt(split[1]));
+						}
+						else if(split[0].equals("/brothel")){
+							System.out.println("Brothel");
+							c.test.brothels.set(Integer.parseInt(split[1]));
 						}
 					}					
 				}catch(Exception e){

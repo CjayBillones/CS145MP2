@@ -29,16 +29,16 @@ public class Player extends GameObject{
 		brothels = new LinkedList<BrothelThread>();
 		incoming = new LinkedList<Attack>();
 		outgoing = new LinkedList<Attack>();
-		initializeBrothels();
-		initializeWhiteWalkerGenerator();
+		//initializeBrothels();
+		//initializeWhiteWalkerGenerator();
 	}
 
 	public void assignHouse(String house){
 		this.house = house;
-		if(this.house.equals("Baratheon")) this.defense_soldier += 20;
-		else if(this.house.equals("Arryn")) this.castle_hp = 50;
-		else if(this.house.equals("Martell")) this.offense_soldier += 20;
-		else if(this.house.equals("Lannister")) this.gold += 500;
+		if(this.house.equals("baratheon")) this.defense_soldier += 20;
+		else if(this.house.equals("arryn")) this.castle_hp = 50;
+		else if(this.house.equals("martell")) this.offense_soldier += 20;
+		else if(this.house.equals("lannister")) this.gold += 500;
 	}
 
 	public void initializeWhiteWalkerGenerator(){
@@ -101,7 +101,7 @@ public class Player extends GameObject{
 		public void run(){
 			while(!stop){
 				try{
-					int delay = Utilities.randInt(30000, 60000);
+					int delay = Utilities.randInt(3000, 6000);
 					p.gold += 70;
 					p.sg.conn.sendMessage("/gold " + p.gold);
 					System.out.println(delay + " - " + p.gold);

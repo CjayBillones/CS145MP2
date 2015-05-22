@@ -20,6 +20,8 @@ import java.awt.image.*;
 
 public class GameInterface extends GameObject {
 
+     MyClient c;
+
 	final String assetsPath = "CS145MP2/assets/img/";
 
 	final int TITLE = 0;
@@ -103,7 +105,9 @@ public class GameInterface extends GameObject {
      boolean actionsOut = false;
      boolean attacksOut = false;
 
-	public GameInterface() {
+	public GameInterface(MyClient c) {
+
+          this.c = c;
 		screenIMG = MarioWindow.getImage(assetsPath + "misc/title.png");
 		menuIMG = MarioWindow.getImage(assetsPath + "1 - menu/menu.png");
 		playerIdIMG = MarioWindow.getImage(assetsPath + "1 - menu/p" + playerId + ".png");
@@ -295,9 +299,10 @@ public class GameInterface extends GameObject {
                          }
 
                          String house = playerSelect.get(houseNumSelected);
+                         c.conn.sendMessage("/house " + house);
 
                          // do client shit
-                         if (house.equals("arryn")) {
+                         if(house.equals("arryn")) {
                               // +20 health
                          }
                          else if (house.equals("baratheon")) {
@@ -340,6 +345,8 @@ public class GameInterface extends GameObject {
                          // load other players
 
                          MarioWindow.delay(5000);
+
+                         this.c.conn.sendMessage("/start_game");
 
                          bgm.setMusic("CS145MP2/assets/music/wav/GoT_main.wav");
                          screen = GAME;
@@ -544,9 +551,9 @@ public class GameInterface extends GameObject {
 	public static void main(String args[]) {
 		
           MyClient c = new MyClient("127.0.0.1",8888);
-		MarioWindow window = new MarioWindow();	
+		MarioWindow window = new MarioWindow(c);	
 
-		GameInterface test = new GameInterface();
+		GameInterface test = new GameInterface(c);
 		window.add(test);
 		window.add(test.bgm);
           window.add(test.health);
