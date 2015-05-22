@@ -8,6 +8,7 @@ import java.text.*;
 public class MyServer{
 
 	LinkedList<SocketThread> clients;
+	int player_houses;
 	ServerSocket ssocket;
 
 	public MyServer(){

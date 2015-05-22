@@ -68,9 +68,11 @@ public class SocketThread extends Thread{
 
 		public void run(){
 			while(!sg.flag){
+				
 				String message = conn.getMessage();
+				if(!message.equals("/players_ready"))
+					System.out.println(message);				
 				String split[] = message.split(" ");
-				System.out.println(message);
 
 				if(message.length() == 0) continue;
 
@@ -82,6 +84,12 @@ public class SocketThread extends Thread{
 						this.sg.flag = true;
 						server.clients.remove(this.sg);
 					}
+					else if(message.equals("/players_ready")){
+						if(sg.server.clients.size() > 1 && sg.server.clients.size() == sg.server.player_houses)
+							this.sg.conn.sendMessage("/players_ready true");
+						else
+							this.sg.conn.sendMessage("/players_ready false");
+					}
 					else if(message.equals("/start_game")){
 						System.out.println("Start Game");
 						sg.p.initializeBrothels();
@@ -90,6 +98,40 @@ public class SocketThread extends Thread{
 					else if(split[0].equals("/house")){
 						System.out.println("House");
 						this.sg.p.assignHouse(split[1]);
+						this.sg.server.player_houses++;
+					}
+					else if(message.equals("/get_stats")){
+						this.sg.conn.sendMessage("/health " + this.sg.p.castle_hp);
+						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);
+						this.sg.conn.sendMessage("/warrior " + this.sg.p.offense_soldier);
+						this.sg.conn.sendMessage("/defender " + this.sg.p.defense_soldier);
+						this.sg.conn.sendMessage("brothel " + this.sg.p.brothel);
+					}
+					else if(message.equals("/buy_warrior")){
+						this.sg.p.offense_soldier += 1;
+						this.sg.p.gold -= 50;
+						this.sg.conn.sendMessage("/warrior " + this.sg.p.offense_soldier);
+						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);
+					}
+					else if(message.equals("/buy_defender")){
+						this.sg.p.defense_soldier += 1;
+						this.sg.p.gold -= 50;
+						this.sg.conn.sendMessage("/defender " + this.sg.p.defense_soldier);
+						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);
+					}
+					else if(message.equals("/buy_brothel")){
+						this.sg.p.brothel += 1;
+						this.sg.p.gold -= 300;
+						this.sg.conn.sendMessage("/brothel " + this.sg.p.brothel);
+						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);
+						this.sg.p.initializeBrothels();
+					}
+					else if(message.equals("/repair_castle")){
+						this.sg.p.castle_hp += 5;
+						if(this.sg.p.castle_hp > 30) this.sg.p.castle_hp = 30;
+						this.sg.p.gold -= 300;
+						this.sg.conn.sendMessage("/health " + this.sg.p.castle_hp);
+						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);
 					}
 				}
 			}

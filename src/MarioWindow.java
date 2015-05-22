@@ -57,7 +57,14 @@ public class MarioWindow extends JFrame implements KeyListener {
 		this.setTitle("Game of Turons"); // ------------------ CHANGE THIS ---------------------- 
    	this.setLocation(X_POSITION,Y_POSITION);
 		this.setIgnoreRepaint(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e){
+				c.conn.sendMessage("/quit");
+				c.flag = true;
+				System.exit(1);
+			}
+		});		
 		this.addKeyListener(this);
 		
 		canvas = new Canvas();
