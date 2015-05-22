@@ -7,8 +7,6 @@ import java.applet.*;
 
 public class BGMIcon extends GameObject {
 
-    final String assetsPath = "CS145MP2/assets/";
-
     final int x = 990;
     final int y = 10;
     boolean on = true;
@@ -22,11 +20,11 @@ public class BGMIcon extends GameObject {
 
     BGM bgm;
 
-    public BGMIcon(){
-        song = assetsPath + "music/wav/GoT_menu.wav";
+    public BGMIcon() {
+        song = "CS145MP2/assets/music/wav/GoT_menu.wav";
         bgm = new BGM(song);
-        bgmOn = MarioWindow.getImage(assetsPath + "img/misc/sound-on.png");
-        bgmOff = MarioWindow.getImage(assetsPath + "img/misc/sound-off.png");
+        bgmOn = MarioWindow.getImage("CS145MP2/assets/img/misc/sound-on.png");
+        bgmOff = MarioWindow.getImage("CS145MP2/assets/img/misc/sound-off.png");
         img = bgmOn;
     }
 
@@ -64,10 +62,6 @@ public class BGMIcon extends GameObject {
             }
         }
 
-    }
-
-    public void mousePressed(int mouse_x, int mouse_y) {
-        
     }
 
     public void setMusic(String fileDir) {

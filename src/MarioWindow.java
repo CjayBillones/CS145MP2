@@ -10,6 +10,7 @@
 	v.1.1 - Just a basic hack
 	v.1.2 - Learned double buffering! http://www.gamedev.net/page/resources/_/reference/programming/languages/java/java-games-active-rendering-r2418
 */
+	
 package CS145MP2.src;
 
 import java.awt.*;
@@ -23,18 +24,14 @@ import java.io.*;
 
 public class MarioWindow extends JFrame implements KeyListener {
 
-	final String assetsPath = "assets/img/";
+     Vector<GameObject> gameobjects = new Vector<GameObject>();
 
-	Vector<GameObject> gameobjects = new Vector<GameObject>();
-
-	MyClient c;
-
-	Toolkit kit = Toolkit.getDefaultToolkit();
-	Dimension screenSize = kit.getScreenSize();
+     Toolkit kit = Toolkit.getDefaultToolkit();
+    	Dimension screenSize = kit.getScreenSize();
 
 	final int FRAME_WIDTH = 1024;
-	final int FRAME_HEIGHT = 600;
-	final int X_POSITION = (screenSize.width - FRAME_WIDTH)/2;
+    	final int FRAME_HEIGHT = 600;
+    	final int X_POSITION = (screenSize.width - FRAME_WIDTH)/2;
 	final int Y_POSITION = (screenSize.height - FRAME_HEIGHT - 50)/2;
 	public static final int REFRESH_RATE = 20;
 	
@@ -48,24 +45,15 @@ public class MarioWindow extends JFrame implements KeyListener {
 	
 	BufferedImage bi;
 
-	public MarioWindow(MyClient c){
-		
-		this.c = c;
+    MarioWindow() {
 
-  	ImageIcon img = new ImageIcon("assets/images/logo.png");
-  	this.setIconImage(img.getImage());
+    	ImageIcon img = new ImageIcon("CS145MP2/assets/img/logo.png");
+    	this.setIconImage(img.getImage());
 
-		this.setTitle("Sum Title"); // ------------------ CHANGE THIS ---------------------- 
-    this.setLocation(X_POSITION,Y_POSITION);
+		this.setTitle("Game of Turons"); // ------------------ CHANGE THIS ---------------------- 
+       	this.setLocation(X_POSITION,Y_POSITION);
 		this.setIgnoreRepaint(true);
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e){
-				c.conn.sendMessage("/quit");
-				c.flag = true;
-				System.exit(1);
-			}
-		});		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.addKeyListener(this);
 		
 		canvas = new Canvas();
@@ -181,7 +169,7 @@ public class MarioWindow extends JFrame implements KeyListener {
 
     public void startGame() {
         //System.out.println("MarioWindow: Starting all game objects...");
-        System.out.println("You have chosen to play \"Sum Title Here\"");  // ------------------ CHANGE THIS ---------------------- 
+        System.out.println("You have chosen to play \"Game of Turons\"");  // ------------------ CHANGE THIS ---------------------- 
         for (GameObject go : gameobjects) {
 			Thread t = new Thread(go);
             t.start();
