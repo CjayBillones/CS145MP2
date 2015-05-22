@@ -10,7 +10,7 @@
 	v.1.1 - Just a basic hack
 	v.1.2 - Learned double buffering! http://www.gamedev.net/page/resources/_/reference/programming/languages/java/java-games-active-rendering-r2418
 */
-	
+
 package CS145MP2.src;
 
 import java.awt.*;
@@ -45,10 +45,12 @@ public class MarioWindow extends JFrame implements KeyListener {
 	
 	BufferedImage bi;
 
-    MarioWindow() {
+     MarioWindow(MyClient c) {
 
-    	ImageIcon img = new ImageIcon("CS145MP2/assets/img/logo.png");
-    	this.setIconImage(img.getImage());
+     	this.c = c;
+
+    		ImageIcon img = new ImageIcon("CS145MP2/assets/img/logo.png");
+    		this.setIconImage(img.getImage());
 
 		this.setTitle("Game of Turons"); // ------------------ CHANGE THIS ---------------------- 
        	this.setLocation(X_POSITION,Y_POSITION);

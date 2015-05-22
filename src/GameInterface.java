@@ -543,6 +543,7 @@ public class GameInterface extends GameObject {
 	
 	public static void main(String args[]) {
 		
+          MyClient c = new MyClient("127.0.0.1",8888);
 		MarioWindow window = new MarioWindow();	
 
 		GameInterface test = new GameInterface();
