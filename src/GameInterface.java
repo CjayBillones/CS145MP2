@@ -18,7 +18,7 @@ import java.awt.image.*;
 
 public class GameInterface extends GameObject {
 
-	final String assetsPath = "assets/img/";
+	final String assetsPath = "CS145MP2/assets/img/";
 
 	final int TITLE = 0;
 	final int MENU = 1;
@@ -170,6 +170,7 @@ public class GameInterface extends GameObject {
      				playersNumIMG = null;
      				playerIdIMG = null;
      				screenNotifIMG = null;
+
                          screen = LOADING;
      				screenIMG = MarioWindow.getImage(assetsPath + "2 - loading/loading-" + playerSelect.get(houseNumSelected) + ".png");
                          sigilIMG = MarioWindow.getImage(assetsPath + "sigils/big-" + playerSelect.get(houseNumSelected) + ".png");
@@ -223,7 +224,7 @@ public class GameInterface extends GameObject {
 
 	// --------------------------------------- [ MAIN FUNCTION ] --------------------------------------- //
 
-	
+	/*
 	public static void main(String args[]) {
 		
 		MarioWindow window = new MarioWindow();	
@@ -233,7 +234,7 @@ public class GameInterface extends GameObject {
 		window.add(test.bgm);
 		window.startGame();
 
-	}
+	}*/
 	
 
 }

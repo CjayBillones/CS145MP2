@@ -23,6 +23,8 @@ public class MyServer{
 				SocketThread sg = new SocketThread(this, ssocket);
 				if(this.clients.size() < 4){
 					sg.conn.sendMessage("Server: You have been connected.");
+					sg.name = "Player" + (this.clients.size()+1);
+					broadcastMessage("client", "Server: " + sg.name + " has connected.", sg, false);
 					this.clients.add(sg);
 					sg.start();
 				}
@@ -39,6 +41,14 @@ public class MyServer{
 		}		
 	}
 	
+	public void broadcastMessage(String src, String message, SocketThread current, boolean self){
+		for(int ac = 0; ac < clients.size(); ac++){
+			if(src.equals("client") && clients.get(ac) == current && !self)
+				continue;
+			clients.get(ac).conn.sendMessage(message);
+		}
+	}
+
 	public static void main(String args[]){
 		new MyServer();
 	}
