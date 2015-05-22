@@ -75,6 +75,7 @@ public class Player extends GameObject{
 					int next_wave = Utilities.randInt(3000, 6000);
 					int num_offense = Utilities.randInt(8, 15);
 					Attack attack = new Attack(null, this.sg, num_offense);
+					sg.conn.sendMessage("/incoming walker " + attack.num_offense);
 					sg.p.incoming.add(attack);
 					attack.start();
 					Thread.sleep(next_wave);
@@ -102,6 +103,7 @@ public class Player extends GameObject{
 				try{
 					int delay = Utilities.randInt(30000, 60000);
 					p.gold += 70;
+					p.sg.conn.sendMessage("/gold " + p.gold);
 					System.out.println(delay + " - " + p.gold);
 					Thread.sleep(delay);
 				}catch(Exception e){

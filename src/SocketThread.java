@@ -36,8 +36,8 @@ public class SocketThread extends Thread{
 			this.server = server;
 			this.ssocket = ssocket;
 			this.s = ssocket.accept();
-			this.p = new Player(this);
 			this.conn = new MyConnection(this.s);
+			this.p = new Player(this);
 			this.receiver = new Thread(new ServerReceiver(this));
 			this.receiver.start();
 		}catch(Exception e){
