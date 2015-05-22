@@ -76,6 +76,7 @@ public class SocketThread extends Thread{
 					if(message.equals("/quit")){
 						System.out.println("Server: " + sg.name + " left.");
 						server.broadcastMessage("client", "Server: " + sg.name + " has left.", sg, false);
+						sg.p.killBrothelThreads();
 						this.sg.flag = true;
 						server.clients.remove(this.sg);
 					}
