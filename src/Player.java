@@ -72,7 +72,7 @@ public class Player extends GameObject{
 		public void run(){
 			while(!this.sg.flag){
 				try{
-					int next_wave = Utilities.randInt(3000, 6000);
+					int next_wave = Utilities.randInt(60000, 120000);
 					int num_offense = Utilities.randInt(8, 15);
 					Attack attack = new Attack(null, this.sg, num_offense);
 					sg.conn.sendMessage("/incoming walker " + attack.num_offense);
@@ -101,7 +101,7 @@ public class Player extends GameObject{
 		public void run(){
 			while(!stop){
 				try{
-					int delay = Utilities.randInt(3000, 6000);
+					int delay = Utilities.randInt(25000, 50000);
 					p.gold += 70;
 					p.sg.conn.sendMessage("/gold " + p.gold);
 					System.out.println(delay + " - " + p.gold);

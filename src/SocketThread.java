@@ -100,6 +100,16 @@ public class SocketThread extends Thread{
 						this.sg.p.assignHouse(split[1]);
 						this.sg.server.player_houses++;
 					}
+					else if(message.equals("/get_num_players")){
+						this.sg.conn.sendMessage("/num_players " + this.sg.server.clients.size());
+					}
+					else if(message.equals("/get_players_houses")){
+						String mess = "/player_houses ";
+						for(int ac = 0; ac < this.sg.server.clients.size(); ac++){
+							mess = mess + this.sg.server.clients.get(ac).p.house + " ";
+						}
+						this.sg.conn.sendMessage(mess);
+					}
 					else if(message.equals("/get_stats")){
 						this.sg.conn.sendMessage("/health " + this.sg.p.castle_hp);
 						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);

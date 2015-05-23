@@ -111,6 +111,16 @@ public class MyClient {
                      else
                         c.ready = false;
                   }
+                  else if(split[0].equals("/num_players")){
+                     c.test.numOfPlayers = Integer.parseInt(split[1]);
+                     c.test.playerHouses = new String[c.test.numOfPlayers];
+                     c.conn.sendMessage("/get_players_houses");
+                  }
+                  else if(split[0].equals("/player_houses")){
+                     for(int ac = 1; ac < split.length; ac++){
+                        c.test.playerHouses[ac-1] = split[ac];
+                     }
+                  }
                   else if(split[0].equals("/health")){
                      System.out.println("Health");
                      c.test.health.set(Integer.parseInt(split[1]));
