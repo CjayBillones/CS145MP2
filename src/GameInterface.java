@@ -37,23 +37,23 @@ public class GameInterface extends GameObject {
    final int SAME_HOUSE = 3;
 
    final int ATTACK_CHOOSE = 4;
-   final int WON_LOST_WAR = 5;
-   final int ENEMY_ATTACKED = 6;
-   final int WHITE_WALKER = 7;
-   final int PLAYER_DEAD = 8;
+   final int SOLDIERS_CHOOSE = 5;
+   final int WON_LOST_WAR = 6;
+   final int ENEMY_ATTACKED = 7;
+   final int WHITE_WALKER = 8;
+   final int PLAYER_DEAD = 9;
 
    int screen = TITLE;
    int state = NORMAL;
 
-   // GAME VARS
-   int playerId; // Client input
+   String playerHouses[];
+
+   // PLAYER STATS
+   int playerId = 1; // Client input
    int numOfPlayers = 2; // Server input
    int maxHP = 30;
    String house = "";
    boolean ready = false;
-   ArrayList<String> players = new ArrayList<String>();
-
-
    // TITLE IMGs
    BufferedImage screenIMG;
 
@@ -74,10 +74,6 @@ public class GameInterface extends GameObject {
    BufferedImage statsBarIMG = null;
    BufferedImage actionBarIMG = null;
    BufferedImage attackBarIMG = null;
-   BufferedImage attackHouseIMG = null;
-   BufferedImage attackLeftIMG = null;
-   BufferedImage attackRightIMG = null;
-   BufferedImage[] attackSigilsIMG = new BufferedImage[7];
    BufferedImage[] miniSigilIMGs = new BufferedImage[7];
    ArrayList<BufferedImage> outAttacks = new ArrayList<BufferedImage>(); // max 5
    ArrayList<BufferedImage> inAttacks = new ArrayList<BufferedImage>(); // max 4
@@ -114,9 +110,6 @@ public class GameInterface extends GameObject {
    public GameInterface(MyClient c) {
 
       this.c = c;
-      c.conn.sendMessage("/get_player_num");
-      //numOfPlayers = Integer.parseInt(c.conn.getMessage());
-
       screenIMG = MarioWindow.getImage(assetsPath + "misc/title.png");
       menuIMG = MarioWindow.getImage(assetsPath + "1 - menu/menu.png");
       playerIdIMG = MarioWindow.getImage(assetsPath + "1 - menu/p" + playerId + ".png");
@@ -128,7 +121,6 @@ public class GameInterface extends GameObject {
       actionBarIn = MarioWindow.getImage(assetsPath + "3 - game/actions-in.png");
       attackBarOut = MarioWindow.getImage(assetsPath + "3 - game/attacks-out.png");
       attackBarIn = MarioWindow.getImage(assetsPath + "3 - game/attacks-in.png");
-      attackHouseIMG = MarioWindow.getImage(assetsPath + "3 - game/attacks-house.png");
       statsBarIMG = statsBarIn;
       actionBarIMG = actionBarIn;
       attackBarIMG = attackBarIn;
@@ -159,7 +151,6 @@ public class GameInterface extends GameObject {
                       String houseName = playerSelect.get(i);
          playerSelectImage.add(MarioWindow.getImage(assetsPath + "1 - menu/descrpt-" + houseName + ".png"));
                       miniSigilIMGs[i] = MarioWindow.getImage(assetsPath + "sigils/mini-" + houseName + ".png");
-                      attackSigilsIMG[i] = MarioWindow.getImage(assetsPath + "3- game/attack-" + houseName + ".png");
       }
 
       houseSelected = playerSelectImage.get(houseNumSelected);
@@ -241,15 +232,15 @@ public class GameInterface extends GameObject {
             
       //if (pressEnter != null) g.drawImage(pressEnter,0,0,null); 
    }
-   
+   /*
    public void run() {
-      while (true) {
-        c.conn.sendMessage("/get_num_of_players");
-        //numOfPlayers = Integer.parseInt(c.conn.getMessage());
+      int k = 0;
+      while (screen != LOADING) {
+         k++;
       }
 
    }
-   
+   */
 
    public void keyReleased(String key) {
       if (key.equals("Enter")) {
@@ -312,7 +303,8 @@ public class GameInterface extends GameObject {
                String house = playerSelect.get(houseNumSelected);
                c.conn.sendMessage("/house " + house);
                c.conn.sendMessage("/get_stats");
-ss
+
+               // do client shit
 
                miniSigil = MarioWindow.getImage(assetsPath + "sigils/mini-" + house + ".png");
                MarioWindow.delay(3000); //change to protocol
@@ -327,10 +319,16 @@ ss
                   }
                }
 
-               // get other players from server, put in ArrayList
-               for (int i = 0; i<numOfPlayers; i++) {
-                 c.sendMessage("/get_house_at_");
-                 c.getMessage
+               try{
+                  this.c.conn.sendMessage("/get_num_players");
+                  Thread.sleep(500);
+               }catch(Exception e){
+                  System.out.println("System: An error occurred.");
+                  e.printStackTrace();                  
+               }
+
+               for(int ac = 0; ac < playerHouses.length; ac++){
+                  System.out.println(playerHouses[ac]);
                }
 
                screenIMG = null;
