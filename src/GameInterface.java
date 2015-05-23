@@ -48,12 +48,14 @@ public class GameInterface extends GameObject {
 
    String playerHouses[];
 
-   // PLAYER STATS
+   // GAME VARS
    int playerId = 1; // Client input
    int numOfPlayers = 2; // Server input
    int maxHP = 30;
    String house = "";
    boolean ready = false;
+   int attack_ctr = 0;
+
    // TITLE IMGs
    BufferedImage screenIMG;
 
@@ -63,10 +65,10 @@ public class GameInterface extends GameObject {
    BufferedImage houseSelected = null;
    BufferedImage screenNotifIMG = null;
    ArrayList<BufferedImage> screenNotif = new ArrayList<BufferedImage>();
-   BufferedImage miniSigil = null;
+   //BufferedImage miniSigil = null;
 
    // LOADING IMGs
-   BufferedImage sigilIMG = null;
+   ArrayList<BufferedImage> sigilIMG = new ArrayList<BufferedImage>();
 
    // GAME IMGs
    BufferedImage statsBarOut, statsBarIn, actionBarOut, actionBarIn, attackBarOut, attackBarIn;
@@ -74,6 +76,12 @@ public class GameInterface extends GameObject {
    BufferedImage statsBarIMG = null;
    BufferedImage actionBarIMG = null;
    BufferedImage attackBarIMG = null;
+   BufferedImage attackHouse = null;
+   BufferedImage attackLeft = null;
+   BufferedImage attackRight = null;
+   BufferedImage attackSigil = null;
+   BufferedImage attackArrow = null;
+   BufferedImage[] attackSigilsIMG = new BufferedImage[7];
    BufferedImage[] miniSigilIMGs = new BufferedImage[7];
    ArrayList<BufferedImage> outAttacks = new ArrayList<BufferedImage>(); // max 5
    ArrayList<BufferedImage> inAttacks = new ArrayList<BufferedImage>(); // max 4
@@ -91,11 +99,11 @@ public class GameInterface extends GameObject {
    int houseNumSelected = 0;
    int screenNotifNum = 0;
 
-   int miniSigil_xpos = 0;
-   int miniSigil_ypos = 0;
+   ArrayList<Integer> miniSigil_xpos = new ArrayList<Integer>();
+   ArrayList<Integer> miniSigil_ypos = new ArrayList<Integer>();
 
-   int sigil_xpos = 0;
-   int sigil_ypos = 0;
+   ArrayList<Integer> sigil_xpos = new  ArrayList<Integer>();
+   ArrayList<Integer> sigil_ypos = new ArrayList<Integer>();
 
    Stats health = new Stats("health");
    Stats money = new Stats("money");
@@ -110,6 +118,7 @@ public class GameInterface extends GameObject {
    public GameInterface(MyClient c) {
 
       this.c = c;
+      c.conn.sendMessage("/get_player_num");
       screenIMG = MarioWindow.getImage(assetsPath + "misc/title.png");
       menuIMG = MarioWindow.getImage(assetsPath + "1 - menu/menu.png");
       playerIdIMG = MarioWindow.getImage(assetsPath + "1 - menu/p" + playerId + ".png");
@@ -121,6 +130,9 @@ public class GameInterface extends GameObject {
       actionBarIn = MarioWindow.getImage(assetsPath + "3 - game/actions-in.png");
       attackBarOut = MarioWindow.getImage(assetsPath + "3 - game/attacks-out.png");
       attackBarIn = MarioWindow.getImage(assetsPath + "3 - game/attacks-in.png");
+      attackHouse = MarioWindow.getImage(assetsPath + "3 - game/attack-house.png");
+      attackLeft = MarioWindow.getImage(assetsPath + "3 - game/attack-arrow-left.png");
+      attackRight = MarioWindow.getImage(assetsPath + "3 - game/attack-arrow-right.png");
       statsBarIMG = statsBarIn;
       actionBarIMG = actionBarIn;
       attackBarIMG = attackBarIn;
@@ -151,6 +163,7 @@ public class GameInterface extends GameObject {
                       String houseName = playerSelect.get(i);
          playerSelectImage.add(MarioWindow.getImage(assetsPath + "1 - menu/descrpt-" + houseName + ".png"));
                       miniSigilIMGs[i] = MarioWindow.getImage(assetsPath + "sigils/mini-" + houseName + ".png");
+                      attackSigilsIMG[i] = MarioWindow.getImage(assetsPath + "3 - game/attack-" + houseName + ".png");
       }
 
       houseSelected = playerSelectImage.get(houseNumSelected);
@@ -184,11 +197,20 @@ public class GameInterface extends GameObject {
 
       if (houseSelected != null && screen == MENU) g.drawImage(houseSelected,0,0,null);
       if (playerIdIMG != null && screen == MENU) g.drawImage(playerIdIMG,0,0,null);
-      if (playersNumIMG != null && screen == MENU) g.drawImage(playersNumIMG,0,0,null);
-      if (miniSigil != null && screen == MENU && state == HOUSE_CHOSEN) g.drawImage(miniSigil,miniSigil_xpos,miniSigil_ypos,null);
+      //if (playersNumIMG != null && screen == MENU) g.drawImage(playersNumIMG,0,0,null);
+      /*if (miniSigil != null && screen == MENU && state == HOUSE_CHOSEN) {
+        for (int i = 0; i<playerHouses.length; i++) {
+          g.drawImage(miniSigil.get(i),miniSigil_xpos.get(i),miniSigil_ypos.get(i),null);
+        }
+      }*/
       if (screenNotifIMG != null && screen == MENU && state != NORMAL) g.drawImage(screenNotifIMG,0,0,null);
 
-      if (sigilIMG != null && screen == LOADING) g.drawImage(sigilIMG,sigil_xpos,sigil_ypos,null);
+      if (screen == LOADING) {
+        for (int i = 0; i<playerHouses.length; i++) {
+          g.drawImage(sigilIMG.get(i),sigil_xpos.get(i),sigil_ypos.get(i),null);
+        }
+        
+      }
 
       if (screen == GAME) {
              for (int i = 0; i<brothels.stat; i++) {
@@ -229,6 +251,10 @@ public class GameInterface extends GameObject {
                      g.drawImage(inAttacks.get(i),xPos,yPos,null);
              }
       }
+
+      if (attackHouse != null && screen == GAME && state == ATTACK_CHOOSE) g.drawImage(attackHouse,0,0,null);
+      if (attackArrow != null && screen == GAME && state == ATTACK_CHOOSE) g.drawImage(attackArrow,0,0,null);
+      if (attackSigil != null && screen == GAME && state == ATTACK_CHOOSE) g.drawImage(attackSigil,0,0,null);
             
       //if (pressEnter != null) g.drawImage(pressEnter,0,0,null); 
    }
@@ -272,42 +298,14 @@ public class GameInterface extends GameObject {
                screenNotifIMG = screenNotif.get(2);
                state = HOUSE_CHOSEN;
 
-               if (playerId == 1) {
-                     sigil_xpos = 160;
-                     sigil_ypos = 179;
-                     miniSigil_xpos = 180;
-                     miniSigil_ypos = 545;
-               }
-
-               else if (playerId == 2) {
-                     sigil_xpos = 349;
-                     sigil_ypos = 179;
-                     miniSigil_xpos = 416;
-                     miniSigil_ypos = 545;
-               }
-
-               else if (playerId == 3) {
-                     sigil_xpos = 537;
-                     sigil_ypos = 179;
-                     miniSigil_xpos = 655;
-                     miniSigil_ypos = 545;
-               }
-
-               else {
-                     sigil_xpos = 725;
-                     sigil_ypos = 179;
-                     miniSigil_xpos = 898;
-                     miniSigil_ypos = 545;
-               }
-
                String house = playerSelect.get(houseNumSelected);
                c.conn.sendMessage("/house " + house);
                c.conn.sendMessage("/get_stats");
 
                // do client shit
 
-               miniSigil = MarioWindow.getImage(assetsPath + "sigils/mini-" + house + ".png");
-               MarioWindow.delay(3000); //change to protocol
+               //miniSigil = MarioWindow.getImage(assetsPath + "sigils/mini-" + house + ".png");
+               //MarioWindow.delay(3000); //change to protocol
 
                while(!c.ready){
                   try{
@@ -331,14 +329,46 @@ public class GameInterface extends GameObject {
                   System.out.println(playerHouses[ac]);
                }
 
-               screenIMG = null;
                houseSelected = null;
                playersNumIMG = null;
                playerIdIMG = null;
                screenNotifIMG = null;
-               screen = LOADING;
+               
                screenIMG = MarioWindow.getImage(assetsPath + "2 - loading/loading-" + house + ".png");
-               sigilIMG = MarioWindow.getImage(assetsPath + "sigils/big-" + house + ".png");
+               //sigilIMG = MarioWindow.getImage(assetsPath + "sigils/big-" + house + ".png");
+
+               for (int i = 0; i<playerHouses.length; i++) {
+                   if (i == 0) {
+                     sigil_xpos.add(160);
+                     sigil_ypos.add(179);
+                     miniSigil_xpos.add(180);
+                     miniSigil_ypos.add(545);
+                   }
+
+                   else if (i == 1) {
+                         sigil_xpos.add(349);
+                         sigil_ypos.add(179);
+                         miniSigil_xpos.add(416);
+                         miniSigil_ypos.add(545);
+                   }
+
+                   else if (i == 2) {
+                         sigil_xpos.add(537);
+                         sigil_ypos.add(179);
+                         miniSigil_xpos.add(655);
+                         miniSigil_ypos.add(545);
+                   }
+
+                   else {
+                         sigil_xpos.add(725);
+                         sigil_ypos.add(179);
+                         miniSigil_xpos.add(898);
+                         miniSigil_ypos.add(545);
+                   }
+                   sigilIMG.add(MarioWindow.getImage(assetsPath + "sigils/big-" + playerHouses[i] + ".png"));
+               }
+
+               screen = LOADING;
 
                 /*
                         if (numOfPlayers > 2) {
@@ -371,11 +401,31 @@ public class GameInterface extends GameObject {
             state = NORMAL;
          }
 
-                else if (screen == GAME && actionsOut) {
+                else if (screen == GAME && actionsOut && state == NORMAL) {
                         actionsOut = false;
                         actionBarIMG = actionBarIn;
                         if (actionSelected == 0) { // Attack house
-
+                            state = ATTACK_CHOOSE;
+                            attack_ctr = 0;
+                            int attack_num = 0;
+                            if (playerHouses[0] != house) {
+                              for (int i = 0; i<playerSelect.size(); i++) {
+                                if (playerHouses[0].equals(playerSelect.get(i))) {
+                                  attack_num = i;
+                                  break;
+                                }
+                              }
+                            }
+                            else {
+                              attack_ctr = 1;
+                              for (int i = 0; i<playerSelect.size(); i++) {
+                                if (playerHouses[1].equals(playerSelect.get(i))) {
+                                  attack_num = i;
+                                  break;
+                                }
+                              }
+                            }
+                            attackSigil = attackSigilsIMG[attack_num];
                         }
                         else if (actionSelected == 1) { // Buy warrior
                                if (money.stat >= 50)
@@ -417,7 +467,12 @@ public class GameInterface extends GameObject {
                         }
                 }
 
-                else if (screen == LOSE) {
+                else if (screen == GAME && state == ATTACK_CHOOSE) {
+                        // attack house with index attack_ctr
+                        state = NORMAL;
+                }
+
+                else if (screen == LOSE || screen == WIN) {
                         System.exit(0);
                 }
       }
@@ -435,9 +490,25 @@ public class GameInterface extends GameObject {
             //screenNotifNum%=2;
             screenNotifIMG = screenNotif.get(screenNotifNum);
          }
-       else if (screen == GAME && actionsOut) {
+       else if (screen == GAME && actionsOut && state == NORMAL) {
                actionSelected++;
                if (actionSelected == 5) actionSelected = 0;
+               //actionSelected%=5;
+       }
+       else if (screen == GAME && state == ATTACK_CHOOSE) {
+               attackArrow = attackRight;
+               attack_ctr++;
+               if (attack_ctr == playerHouses.length) attack_ctr = 0;
+               int attack_num = 0;
+               for (int i = 0; i<playerSelect.size(); i++) {
+                                if (playerHouses[0].equals(playerSelect.get(i))) {
+                                  attack_num = i;
+                                  break;
+                                }
+                              }
+               attackSigil = attackSigilsIMG[attack_num];
+               MarioWindow.delay(200);
+               attackArrow = null;
                //actionSelected%=5;
        }
       }
@@ -455,11 +526,28 @@ public class GameInterface extends GameObject {
                         if (screenNotifNum < 0) screenNotifNum = 1;
             screenNotifIMG = screenNotif.get(screenNotifNum);
          }
-         else if (screen == GAME && actionsOut) {
+         else if (screen == GAME && actionsOut && state == NORMAL) {
             actionSelected--;
             if (actionSelected < 0) actionSelected = 4;
             //actionSelected%=5;
          }
+         else if (screen == GAME && state == ATTACK_CHOOSE) {
+               attackArrow = attackLeft;
+               attack_ctr--;
+               if (attack_ctr < 0) attack_ctr = playerHouses.length-1;
+               int attack_num = 0;
+               for (int i = 0; i<playerSelect.size(); i++) {
+                                if (playerHouses[attack_ctr].equals(playerSelect.get(i))) {
+                                  attack_num = i;
+                                  break;
+                                }
+                              }
+               attackSigil = attackSigilsIMG[attack_num];
+               MarioWindow.delay(200);
+               attackArrow = null;
+               //actionSelected%=5;
+       }
+
       }
 
       else if (key.equals("S") && screen == GAME) { // ok
@@ -523,6 +611,13 @@ public class GameInterface extends GameObject {
 
       else if (key.equals("W")) {
              screen = WIN;
+         health.setVisible(false);
+         money.setVisible(false);
+         defenders.setVisible(false);
+         warriors.setVisible(false);
+         brothels.setVisible(false);
+         bgm.setMusic("CS145MP2/assets/music/wav/GoT_menu.wav");
+         screenIMG = MarioWindow.getImage(assetsPath + "misc/winner.png");
       }
 
       else if (key.equals("L")) {
@@ -542,7 +637,7 @@ public class GameInterface extends GameObject {
 
    // --------------------------------------- [ MAIN FUNCTION ] --------------------------------------- //
 
-   
+   /*
    public static void main(String args[]) {
       
                MyClient c = new MyClient("127.0.0.1",8888);
@@ -558,7 +653,7 @@ public class GameInterface extends GameObject {
                window.add(test.brothels);
       window.startGame();
 
-   }
+   }*/
    
 
 }
