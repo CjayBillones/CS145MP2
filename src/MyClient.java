@@ -106,8 +106,9 @@ public class MyClient {
                      System.exit(1);
                   }
                   else if(split[0].equals("/players_ready")){
-                     if(split[1].equals("true"))
+                     if(split[1].equals("true")) {
                         c.ready = true;
+                     }
                      else
                         c.ready = false;
                   }
@@ -130,6 +131,12 @@ public class MyClient {
                   else if(split[0].equals("/brothel")){
                      System.out.println("Brothel");
                      c.test.brothels.set(Integer.parseInt(split[1]));
+                  }
+                  else if (split[0].equals("/num_of_players")) {
+                     c.test.numOfPlayers = Integer.parseInt(split[1]);
+                  }
+                  else if (split[0].equals("/player_num")) {
+                     c.test.playerId = Integer.parseInt(split[1]);
                   }
                }              
             }catch(Exception e){

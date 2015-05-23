@@ -21,7 +21,7 @@ public class Player extends GameObject{
 
 	public Player(SocketThread sg){
 		this.sg = sg;
-		this.castle_hp = 25;
+		this.castle_hp = 30;
 		this.offense_soldier = 10;
 		this.defense_soldier = 10;
 		this.gold = 1000;
