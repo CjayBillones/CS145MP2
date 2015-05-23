@@ -35,7 +35,7 @@ public class MarioWindow extends JFrame implements KeyListener {
 	final int Y_POSITION = (screenSize.height - FRAME_HEIGHT - 50)/2;
 	public static final int REFRESH_RATE = 20;
 	
-	MyClient c;
+	final MyClient c;
 
 	boolean fpsFlag = true;
 	
@@ -47,9 +47,9 @@ public class MarioWindow extends JFrame implements KeyListener {
 	
 	BufferedImage bi;
 
-	MarioWindow(MyClient c){
+	MarioWindow(MyClient client){
 
-		this.c = c;
+		this.c = client;
 
 		ImageIcon img = new ImageIcon("CS145MP2/assets/img/logo.png");
 		this.setIconImage(img.getImage());

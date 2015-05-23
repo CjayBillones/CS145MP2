@@ -106,10 +106,21 @@ public class MyClient {
                      System.exit(1);
                   }
                   else if(split[0].equals("/players_ready")){
-                     if(split[1].equals("true"))
+                     if(split[1].equals("true")) {
                         c.ready = true;
+                     }
                      else
                         c.ready = false;
+                  }
+                  else if(split[0].equals("/num_players")){
+                     c.test.numOfPlayers = Integer.parseInt(split[1]);
+                     c.test.playerHouses = new String[c.test.numOfPlayers];
+                     c.conn.sendMessage("/get_players_houses");
+                  }
+                  else if(split[0].equals("/player_houses")){
+                     for(int ac = 1; ac < split.length; ac++){
+                        c.test.playerHouses[ac-1] = split[ac];
+                     }
                   }
                   else if(split[0].equals("/health")){
                      System.out.println("Health");
@@ -130,6 +141,12 @@ public class MyClient {
                   else if(split[0].equals("/brothel")){
                      System.out.println("Brothel");
                      c.test.brothels.set(Integer.parseInt(split[1]));
+                  }
+                  else if (split[0].equals("/num_of_players")) {
+                     c.test.numOfPlayers = Integer.parseInt(split[1]);
+                  }
+                  else if (split[0].equals("/player_num")) {
+                     c.test.playerId = Integer.parseInt(split[1]);
                   }
                }              
             }catch(Exception e){

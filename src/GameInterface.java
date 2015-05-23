@@ -46,6 +46,8 @@ public class GameInterface extends GameObject {
    int screen = TITLE;
    int state = NORMAL;
 
+   String playerHouses[];
+
    // PLAYER STATS
    int playerId = 1; // Client input
    int numOfPlayers = 2; // Server input
@@ -315,6 +317,18 @@ public class GameInterface extends GameObject {
                      System.out.println("System: An error occurred.");
                      e.printStackTrace();
                   }
+               }
+
+               try{
+                  this.c.conn.sendMessage("/get_num_players");
+                  Thread.sleep(500);
+               }catch(Exception e){
+                  System.out.println("System: An error occurred.");
+                  e.printStackTrace();                  
+               }
+
+               for(int ac = 0; ac < playerHouses.length; ac++){
+                  System.out.println(playerHouses[ac]);
                }
 
                screenIMG = null;

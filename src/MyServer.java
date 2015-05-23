@@ -25,6 +25,7 @@ public class MyServer{
 				if(this.clients.size() < 4){
 					sg.conn.sendMessage("Server: You have been connected.");
 					sg.name = "Player" + (this.clients.size()+1);
+					sg.player_num = this.clients.size()+1;
 					broadcastMessage("client", "Server: " + sg.name + " has connected.", sg, false);
 					this.clients.add(sg);
 					sg.start();

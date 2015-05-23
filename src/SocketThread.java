@@ -27,6 +27,7 @@ public class SocketThread extends Thread{
 	Thread receiver;
 	boolean flag;
 	String name;
+	int player_num;
 
 	Player p;
 
@@ -100,12 +101,22 @@ public class SocketThread extends Thread{
 						this.sg.p.assignHouse(split[1]);
 						this.sg.server.player_houses++;
 					}
+					else if(message.equals("/get_num_players")){
+						this.sg.conn.sendMessage("/num_players " + this.sg.server.clients.size());
+					}
+					else if(message.equals("/get_players_houses")){
+						String mess = "/player_houses ";
+						for(int ac = 0; ac < this.sg.server.clients.size(); ac++){
+							mess = mess + this.sg.server.clients.get(ac).p.house + " ";
+						}
+						this.sg.conn.sendMessage(mess);
+					}
 					else if(message.equals("/get_stats")){
 						this.sg.conn.sendMessage("/health " + this.sg.p.castle_hp);
 						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);
 						this.sg.conn.sendMessage("/warrior " + this.sg.p.offense_soldier);
 						this.sg.conn.sendMessage("/defender " + this.sg.p.defense_soldier);
-						this.sg.conn.sendMessage("brothel " + this.sg.p.brothel);
+						this.sg.conn.sendMessage("/brothel " + this.sg.p.brothel);
 					}
 					else if(message.equals("/buy_warrior")){
 						this.sg.p.offense_soldier += 1;
@@ -133,6 +144,16 @@ public class SocketThread extends Thread{
 						this.sg.conn.sendMessage("/health " + this.sg.p.castle_hp);
 						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);
 					}
+					else if(message.equals("/get_num_of_players")){
+						this.sg.conn.sendMessage("/num_of_players " + this.sg.server.clients.size());
+					} 
+					else if(message.equals("/get_player_num")){
+						this.sg.conn.sendMessage("/player_num " + this.sg.player_num);
+					}
+					/*else if (message.startsWith("/get_house_at_") {
+						int num = Integer.parseInt(message.charAt(15));
+						MyClient player = this.sg.server.clients.get(i).p;
+					}*/
 				}
 			}
 		}
