@@ -51,6 +51,14 @@ public class MyServer{
 		}
 	}
 
+	public SocketThread getPlayer(String house){
+		for(int ac = 0; ac < clients.size(); ac++){
+			if(clients.get(ac).p.house.equals(house))
+				return clients.get(ac);
+		}
+		return null;
+	}
+
 	public static void main(String args[]){
 		new MyServer();
 	}

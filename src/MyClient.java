@@ -125,6 +125,16 @@ public class MyClient {
                   else if(split[0].equals("/health")){
                      System.out.println("Health");
                      c.test.health.set(Integer.parseInt(split[1]));
+                     if(c.test.health.stat <= 0){
+                        c.test.screen = c.test.LOSE;
+                        c.test.health.setVisible(false);
+                        c.test.money.setVisible(false);
+                        c.test.defenders.setVisible(false);
+                        c.test.warriors.setVisible(false);
+                        c.test.brothels.setVisible(false);
+                        c.test.bgm.setMusic("CS145MP2/assets/music/wav/GoT_game_over.wav");
+                        c.test.screenIMG = MarioWindow.getImage(c.test.assetsPath + "misc/game-over.png");                        
+                     }
                   }
                   else if(split[0].equals("/gold")){
                      System.out.println("Gold");

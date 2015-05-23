@@ -73,8 +73,7 @@ public class Player extends GameObject{
 			while(!this.sg.flag){
 				try{
 					int next_wave = Utilities.randInt(60000, 120000);
-					int num_offense = Utilities.randInt(8, 15);
-					Attack attack = new Attack(null, this.sg, num_offense);
+					Attack attack = new Attack(null, this.sg);
 					sg.conn.sendMessage("/incoming walker " + attack.num_offense);
 					sg.p.incoming.add(attack);
 					attack.start();

@@ -150,6 +150,25 @@ public class SocketThread extends Thread{
 					else if(message.equals("/get_player_num")){
 						this.sg.conn.sendMessage("/player_num " + this.sg.player_num);
 					}
+					else if(split[0].equals("/attack")){
+						SocketThread enemy = this.sg.server.getPlayer(split[2]);
+						Attack attack = new Attack(this.sg, enemy);
+						attack.start();
+						/**if(this.sg.p.offense_soldier > enemy.p.defense_soldier){
+							this.sg.p.offense_soldier -= enemy.p.defense_soldier;
+							enemy.p.defense_soldier = 0;
+							enemy.p.castle_hp += (enemy.p.defense_soldier - this.sg.p.offense_soldier);
+							this.sg.conn.sendMessage("/warrior " + this.sg.p.offense_soldier);
+							enemy.conn.sendMessage("/defender " + enemy.p.defense_soldier);
+							enemy.conn.sendMessage("/health " + enemy.p.castle_hp);
+						}
+						else{
+							this.sg.p.offense_soldier = 0;
+							enemy.p.defense_soldier -= this.sg.p.offense_soldier;
+							this.sg.conn.sendMessage("/warrior " + this.sg.p.offense_soldier);
+							enemy.conn.sendMessage("/defender " + enemy.p.defense_soldier);
+						}**/
+					}
 					/*else if (message.startsWith("/get_house_at_") {
 						int num = Integer.parseInt(message.charAt(15));
 						MyClient player = this.sg.server.clients.get(i).p;
