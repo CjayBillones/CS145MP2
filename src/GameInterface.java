@@ -46,7 +46,7 @@ public class GameInterface extends GameObject {
    int screen = TITLE;
    int state = NORMAL;
 
-       // PLAYER STATS
+   // PLAYER STATS
    int playerId = 1; // Client input
    int numOfPlayers = 2; // Server input
    int maxHP = 30;
