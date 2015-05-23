@@ -152,9 +152,6 @@ public class MyClient {
                      System.out.println("Brothel");
                      c.test.brothels.set(Integer.parseInt(split[1]));
                   }
-                  else if (split[0].equals("/num_of_players")) {
-                     c.test.numOfPlayers = Integer.parseInt(split[1]);
-                  }
                   else if (split[0].equals("/player_num")) {
                      c.test.playerId = Integer.parseInt(split[1]);
                   }

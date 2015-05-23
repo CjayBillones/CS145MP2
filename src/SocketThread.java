@@ -144,9 +144,6 @@ public class SocketThread extends Thread{
 						this.sg.conn.sendMessage("/health " + this.sg.p.castle_hp);
 						this.sg.conn.sendMessage("/gold " + this.sg.p.gold);
 					}
-					else if(message.equals("/get_num_of_players")){
-						this.sg.conn.sendMessage("/num_of_players " + this.sg.server.clients.size());
-					} 
 					else if(message.equals("/get_player_num")){
 						this.sg.conn.sendMessage("/player_num " + this.sg.player_num);
 					}
